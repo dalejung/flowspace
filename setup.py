@@ -1,4 +1,5 @@
 from distutils.core import setup
+import fastentrypoints
 
 DISTNAME='flowspace'
 FULLVERSION='0.1'
@@ -10,8 +11,10 @@ setup(
     entry_points={
         'console_scripts':
             [
+                'flowspace=flowspace.cli:cli',
             ]
     },
     install_requires = [
+        'click'
     ]
 )

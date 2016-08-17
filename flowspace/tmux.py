@@ -3,18 +3,22 @@ import re
 
 DIR_MAP = {
     'up': {
+        'tmux_opt': '-U',
         'edge': 'top',
         'edge_op': min,
     },
     'right': {
+        'tmux_opt': '-R',
         'edge': 'right',
         'edge_op': max,
     },
     'down': {
+        'tmux_opt': '-D',
         'edge': 'bottom',
         'edge_op': max,
     },
     'left': {
+        'tmux_opt': '-L',
         'edge': 'left',
         'edge_op': min,
     },
@@ -67,9 +71,9 @@ def parse_pane(line):
     pane = TmuxPane(id, active, top, right, bottom, left)
     return pane
 
-def get_panes():
+def get_panes(session_name=':'):
     F = "#{pane_id}:#{pane_top},#{pane_right},#{pane_bottom},#{pane_left}:#{pane_active}"
-    out = run("tmux list-panes -F \"{F}\"", F=F)
+    out = run("tmux list-panes -t {session_name} -F \"{F}\"", F=F, session_name=session_name)
     lines = out.split()
 
     panes = {pane.id: pane for pane in map(parse_pane, lines)}
@@ -82,7 +86,7 @@ def get_active_pane_id(panes):
         raise Exception("No pane give and not active pane.")
     return pane.id
 
-def at_edge(direction, pane_id=None):
+def at_edge(direction, pane_id=None, session_name=':'):
     """
     Detects whether a tmux-pane is at the edge of its containing tmux-window.
 
@@ -92,7 +96,7 @@ def at_edge(direction, pane_id=None):
     edge = conf['edge']
     reducer = conf['edge_op']
 
-    panes = get_panes()
+    panes = get_panes(session_name)
     if pane_id is None:
         pane_id = get_active_pane_id(panes)
     pane = panes[pane_id]
@@ -102,3 +106,11 @@ def at_edge(direction, pane_id=None):
 
     return edge_extreme == pane_edge
 
+def select_pane(direction):
+    conf = DIR_MAP[direction]
+    tmux_opt = conf['tmux_opt']
+    run("tmux select-pane {tmux_opt}", tmux_opt=tmux_opt)
+
+def tmux_debug():
+    msg = run("tmux display-message -p \"#{client_session}\"")
+    return msg

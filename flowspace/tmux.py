@@ -1,7 +1,5 @@
-from earthdragon.tools import Timer
 from flowspace.shell import run
 import re
-import operator
 
 DIR_MAP = {
     'up': {

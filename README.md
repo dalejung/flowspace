@@ -16,3 +16,13 @@ Workspace
 4. Allow workspace metadata. Currently use this to set a name per i3 workspace.
    This is used to key the automatic tmux session that are generated per
    terminal instance.
+
+`.i3/config`
+
+```
+# change focus
+bindsym Mod4+Shift+$left exec zsh -c "flowspace move-focus left"
+bindsym Mod4+Shift+$down exec zsh -c "flowspace move-focus down"
+bindsym Mod4+Shift+$up exec zsh -c "flowspace move-focus up"
+bindsym Mod4+Shift+$right exec zsh -c "flowspace move-focus right"
+```

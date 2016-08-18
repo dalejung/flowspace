@@ -37,6 +37,10 @@ class TmuxPane:
         s = 'TmuxPane({id}, {active}, {top}, {right}, {bottom}, {left})'
         return s.format(**self.__dict__)
 
+def get_active_tmux_window():
+    pid = run('xdotool getactivewindow')
+    return get_tmux_window(pid)
+
 def get_tmux_window(pid):
     """
     Linux specific function that get the tmux session of the client specified

@@ -1,6 +1,9 @@
 flowspace
 =========
 
+*In case it wasn't apparently. This is severely WIP as I try to figure out what
+workflow I'm targetting*
+
 Current components:
 
 `i3-wm`

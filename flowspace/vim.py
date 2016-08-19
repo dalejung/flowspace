@@ -14,7 +14,6 @@ def is_vim(title):
     if bits[0].startswith('{') and bits[1] == 'vim':
         return True
 
-
 def vim_window_at_edge(direction, title=None):
     if title is None:
         title = get_active_window_title()
@@ -30,4 +29,4 @@ def vim_window_at_edge(direction, title=None):
 
 def focus(direction):
     key = DIR_MAP[direction]
-    send_keys("<ESC>:wincmd {key};<ENTER>".format(key=key))
+    send_keys(r"\e,zt{key}".format(key=key))

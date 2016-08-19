@@ -8,5 +8,5 @@ def get_active_window_title():
     title = matches.group(1)
     return title
 
-def send_keys(keys):
-    print(keys)
+def send_keys(text):
+    out = run('xvkbd -text "{text}"', text=text)

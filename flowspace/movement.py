@@ -1,10 +1,10 @@
 from .tmux import at_edge, select_pane, tmux_parse_window_title
 from .xtools import get_active_window_title, send_keys
-from . import i3
+from . import i3wm
 from . import vim
 
 MODE_SWITCH = {
-    'i3': i3.focus,
+    'i3': i3wm.focus_window,
     'vim': vim.focus,
     'tmux': select_pane
 }
@@ -13,7 +13,6 @@ def move_focus(direction):
     mode = _move_focus(direction)
     callback = MODE_SWITCH[mode]
     callback(direction)
-    print(mode, callback)
 
 def _move_focus(direction):
     title = get_active_window_title()

@@ -7,3 +7,6 @@ def get_active_window_title():
     matches = re.search(r'\"(.*)\"$', xprop_name)
     title = matches.group(1)
     return title
+
+def send_keys(keys):
+    print(keys)

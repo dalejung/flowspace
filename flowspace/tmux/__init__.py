@@ -1,1 +1,6 @@
-from .tmux import get_active_tmux_window, at_edge, select_pane
+from .tmux import (
+    get_active_tmux_window,
+    at_edge,
+    select_pane,
+    tmux_parse_window_title
+)

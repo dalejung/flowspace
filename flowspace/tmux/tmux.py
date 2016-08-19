@@ -1,4 +1,5 @@
 from flowspace.shell import run
+from flowspace.xtools import get_active_window_title
 import re
 
 DIR_MAP = {
@@ -38,10 +39,10 @@ class TmuxPane:
         return s.format(**self.__dict__)
 
 def get_active_tmux_window():
-    pid = run('xdotool getactivewindow')
-    return get_tmux_window(pid)
+    window_title = get_active_window_title()
+    return tmux_parse_window_title(window_title)
 
-def get_tmux_window(pid):
+def tmux_parse_window_title(window_title):
     """
     Linux specific function that get the tmux session of the client specified
     by pid. This depends on the tmux.conf settings that updates the
@@ -61,8 +62,7 @@ def get_tmux_window(pid):
 
     Might be worth unsetting $TMUX.
     """
-    xprop_name = run("xprop -id {pid} WM_NAME".format(pid=int(pid)))
-    matches = re.search(r'\{(.*)\}', xprop_name)
+    matches = re.search(r'\{(.*)\}', window_title)
     if matches:
         out = matches.group(1)
         session_name, window_index = out.split(':')

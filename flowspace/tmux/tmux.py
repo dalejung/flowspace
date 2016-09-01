@@ -105,10 +105,11 @@ def at_edge(direction, pane_id=None, session_name=':'):
 
     return edge_extreme == pane_edge
 
-def select_pane(direction):
+def select_pane(direction, session_name=':'):
     conf = DIR_MAP[direction]
     tmux_opt = conf['tmux_opt']
-    run("tmux select-pane {tmux_opt}", tmux_opt=tmux_opt)
+    run("tmux select-pane {tmux_opt} -t {session_name}", tmux_opt=tmux_opt,
+        session_name=session_name)
 
 def tmux_debug():
     msg = run("tmux display-message -p \"#{client_session}\"")

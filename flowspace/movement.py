@@ -3,10 +3,16 @@ from .xtools import get_active_window_title, send_keys
 from . import i3wm
 from . import vim
 
+def select_pane_active(direction):
+    """ integration tmux select-pane with session_name from title """
+    title = get_active_window_title()
+    session_name, window = tmux_parse_window_title(title)
+    select_pane(direction, session_name=session_name)
+
 MODE_SWITCH = {
     'i3': i3wm.focus_window,
     'vim': vim.focus,
-    'tmux': select_pane
+    'tmux': select_pane_active
 }
 
 def move_focus(direction):

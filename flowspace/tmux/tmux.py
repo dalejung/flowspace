@@ -1,5 +1,4 @@
 from flowspace.shell import run
-from flowspace.xtools import get_active_window_title
 import re
 
 DIR_MAP = {
@@ -37,10 +36,6 @@ class TmuxPane:
     def __repr__(self):
         s = 'TmuxPane({id}, {active}, {top}, {right}, {bottom}, {left})'
         return s.format(**self.__dict__)
-
-def get_active_tmux_window():
-    window_title = get_active_window_title()
-    return tmux_parse_window_title(window_title)
 
 def tmux_parse_window_title(window_title):
     """

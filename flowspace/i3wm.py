@@ -57,11 +57,25 @@ class I3Tree:
             return I3Tree(obj, key)
         return obj
 
-    def treeview(self, depth=0, repr_func=lambda x: x.name +' '+ x['type']):
+    def keys(self):
+        return self.obj.keys()
+
+    def treeview(self, repr_func=lambda x: x.name +' '+ x['type'], depth=0):
         lines = []
         lines.append("  "*depth + repr_func(self))
         for node in self._get_nodes():
-            lines.append(node.treeview(depth+1))
+            lines.append(node.treeview(repr_func=repr_func, depth=depth+1))
         return '\n'.join(lines)
 
 tree = I3Tree(i3.get_tree())
+def dale(self):
+    attrs = ['name', 'type', 'focused', 'id']
+    attrs = ['{{{0}}}'.format(attr) for attr in attrs]
+    FMT = " ".join(attrs)
+    return FMT.format(**self.obj)
+print(tree.treeview(repr_func=dale))
+
+# create a different view that will map the workspace container to it's screena
+# nd workspace.
+
+# i3.focus(con_id=12323)

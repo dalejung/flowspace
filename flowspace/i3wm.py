@@ -3,6 +3,19 @@ import i3
 def focus_window(direction):
     i3.focus(direction)
 
+def get_active_output():
+    workspaces = i3.get_workspaces()
+    for ws in workspaces:
+        if ws['focused']:
+            return ws['output']
+
+def switch_workspace(config, active_output, ws_num):
+    offset = config['offset']
+    output_config = config['output_config']
+    base_num = output_config.get(active_output, 1)
+    ws_num = (ws_num - 1) + base_num
+    i3.workspace(str(ws_num))
+
 class I3Tree:
     def __init__(self, obj, name=None):
         if name is None:
@@ -67,13 +80,13 @@ class I3Tree:
             lines.append(node.treeview(repr_func=repr_func, depth=depth+1))
         return '\n'.join(lines)
 
-tree = I3Tree(i3.get_tree())
-def dale(self):
-    attrs = ['name', 'type', 'focused', 'id']
-    attrs = ['{{{0}}}'.format(attr) for attr in attrs]
-    FMT = " ".join(attrs)
-    return FMT.format(**self.obj)
-print(tree.treeview(repr_func=dale))
+#tree = I3Tree(i3.get_tree())
+#def dale(self):
+#    attrs = ['name', 'type', 'focused', 'id']
+#    attrs = ['{{{0}}}'.format(attr) for attr in attrs]
+#    FMT = " ".join(attrs)
+#    return FMT.format(**self.obj)
+#print(tree.treeview(repr_func=dale))
 
 # create a different view that will map the workspace container to it's screena
 # nd workspace.

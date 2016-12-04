@@ -28,6 +28,23 @@ bindsym Mod4+Shift+$left exec zsh -c "flowspace move-focus left"
 bindsym Mod4+Shift+$down exec zsh -c "flowspace move-focus down"
 bindsym Mod4+Shift+$up exec zsh -c "flowspace move-focus up"
 bindsym Mod4+Shift+$right exec zsh -c "flowspace move-focus right"
+
+
+# workspace switcher per output
+bindsym Mod4+1 exec "zsh -c \\"flowspace workspace-switcher DP-4,DP-2 10 1\\""
+bindsym Mod4+2 exec "zsh -c \\"flowspace workspace-switcher DP-4,DP-2 10 2\\""
+bindsym Mod4+3 exec "zsh -c \\"flowspace workspace-switcher DP-4,DP-2 10 3\\""
+bindsym Mod4+4 exec "zsh -c \\"flowspace workspace-switcher DP-4,DP-2 10 4\\""
+bindsym Mod4+5 exec "zsh -c \\"flowspace workspace-switcher DP-4,DP-2 10 5\\""
+
+# setup workspaces
+workspace 1  output DP-4
+...
+workspace 9  output DP-4
+
+workspace 11 output DP-2
+...
+workspace 16 output DP-2
 ```
 
 `.vimrc`

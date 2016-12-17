@@ -29,4 +29,4 @@ def vim_window_at_edge(direction, title=None):
 
 def focus(direction):
     key = DIR_MAP[direction]
-    send_keys(r"\e,zt{key}".format(key=key))
+    send_keys(r"comma+z+t+{key}".format(key=key))

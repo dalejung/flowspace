@@ -9,4 +9,4 @@ def get_active_window_title():
     return title
 
 def send_keys(text):
-    out = run('xvkbd -text "{text}"', text=text)
+    out = run('xdotool key --clearmodifiers {text}', text=text)

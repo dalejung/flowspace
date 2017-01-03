@@ -87,10 +87,13 @@ def gen_target_dict(path, **kwargs):
 def fuzzy_search(target_dict):
     import subprocess
     keys = '\n'.join(target_dict.keys())
-    name = subprocess.check_output(
-            ["fzf-tmux", "--tiebreak=length"],
-            input=keys.encode('utf-8'),
-    )
+    try:
+        name = subprocess.check_output(
+                ["fzf-tmux", "--tiebreak=length"],
+                input=keys.encode('utf-8'),
+        )
+    except subprocess.CalledProcessError as e:
+        return ""
     name = name.decode('utf-8').strip()
     if name in target_dict:
        return target_dict[name]

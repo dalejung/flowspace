@@ -30,6 +30,7 @@ def find_filetargets(path, max_depth=None, include_files=True, include_dirs=True
                      current_depth=1, **kwargs):
     targets = []
     dirs = []
+    exts = kwargs.get('exts', None)
     for entry in os.scandir(path):
         if entry.name in SKIP_NAMES:
             continue
@@ -39,8 +40,11 @@ def find_filetargets(path, max_depth=None, include_files=True, include_dirs=True
             if include_dirs:
                 targets.append(entry)
             continue
-        if include_files:
-            targets.append(entry)
+        if not include_files:
+            continue
+        if exts and not os.path.splitext(entry.name)[1] in exts:
+            continue
+        targets.append(entry)
 
     if max_depth is None or current_depth < max_depth:
         for dir in dirs:
@@ -48,7 +52,8 @@ def find_filetargets(path, max_depth=None, include_files=True, include_dirs=True
                 subtargets = find_filetargets(dir.path, max_depth=max_depth,
                                               include_files=include_files,
                                               include_dirs=include_dirs,
-                                              current_depth=current_depth+1
+                                              current_depth=current_depth+1,
+                                              **kwargs
                                              )
                 targets.extend(subtargets)
             except PermissionError:
@@ -78,3 +83,14 @@ def gen_target_dict(path, **kwargs):
     targets = find_filetargets(path, **kwargs)
     target_dict = {label_maker(entry):entry.path for entry in targets}
     return target_dict
+
+def fuzzy_search(target_dict):
+    import subprocess
+    keys = '\n'.join(target_dict.keys())
+    name = subprocess.check_output(
+            ["fzf-tmux", "--tiebreak=length"],
+            input=keys.encode('utf-8'),
+    )
+    name = name.decode('utf-8').strip()
+    if name in target_dict:
+       return target_dict[name]

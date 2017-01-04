@@ -57,7 +57,7 @@ def tmux_parse_window_title(window_title):
 
     Might be worth unsetting $TMUX.
     """
-    matches = re.search(r'\{(.*)\}', window_title)
+    matches = re.search(r'\{(.*?)\}', window_title)
     if matches:
         out = matches.group(1)
         session_name, window_index = out.split(':')

@@ -21,9 +21,21 @@ def vim_window_at_edge(direction, title=None):
     if not is_vim(title):
         return
 
+    # geoms are in form of (int,int,int,int)
     bits = title.split()
-    geom = bits[-1]
-    geoms = map(int, geom[1:-1].split(','))
+    for bit in bits:
+        if not bit.startswith('(') or not bit.endswith(')'):
+            continue
+
+        geoms = bit[1:-1].split(',')
+        if len(geoms) != 4:
+            continue
+
+        try:
+            geoms = list(map(int, geoms))
+        except ValueError:
+            continue
+
     up, right, down, left = geoms
     return locals()[direction]
 

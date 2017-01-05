@@ -22,8 +22,8 @@ def move_focus(direction):
 
 def _move_focus(direction):
     title = get_active_window_title()
-    if vim.is_vim(title) and not vim.vim_window_at_edge(direction, title):
-        return 'vim'
+    #if vim.is_vim(title) and not vim.vim_window_at_edge(direction, title):
+    #    return 'vim'
 
     res = tmux_parse_window_title(title)
     if not res:

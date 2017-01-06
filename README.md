@@ -88,3 +88,13 @@ function! s:MyTitle()
   return "vim " . "<".l:buffername ."> ("  .w:allEdge . ")"
 endfunction
 ```
+
+### neovim
+
+```
+function vim() {
+  NVIM_LISTEN_ADDRESS=/tmp/nvim_$$ nvim $@
+}
+```
+
+Use this shortcut to create a nvim listening on unique socket.

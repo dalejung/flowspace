@@ -6,7 +6,7 @@ from . import vim
 def select_pane_active(direction):
     """ integration tmux select-pane with session_name from title """
     title = get_active_window_title()
-    session_name, window = tmux_parse_window_title(title)
+    session_name, window, pane_id = tmux_parse_window_title(title)
     select_pane(direction, session_name=session_name)
 
 MODE_SWITCH = {
@@ -28,7 +28,7 @@ def _move_focus(direction):
     res = tmux_parse_window_title(title)
     if not res:
         return 'i3'
-    session_name, window = res
+    session_name, window, pane_id = res
 
     if not at_edge(direction, session_name=session_name):
         return 'tmux'

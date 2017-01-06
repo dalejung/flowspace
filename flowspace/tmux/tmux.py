@@ -44,7 +44,7 @@ def tmux_parse_window_title(window_title):
     window title. This specific function currently relies on:
 
     ```
-    set -g set-titles-string "{#S:#I} #T"
+    set -g set-titles-string "{#S:#I:#D} #T"
     ```
 
     This is necessary because the functions like `tmux splitw` and
@@ -60,8 +60,8 @@ def tmux_parse_window_title(window_title):
     matches = re.search(r'\{(.*?)\}', window_title)
     if matches:
         out = matches.group(1)
-        session_name, window_index = out.split(':')
-        return session_name, window_index
+        session_name, window_index, pane_id = out.split(':')
+        return session_name, window_index, pane_id
 
 def parse_pane(line):
     id, geom, active = line.split(':')

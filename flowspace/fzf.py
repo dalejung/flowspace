@@ -23,7 +23,6 @@ as the keys don't collide.
 import os
 import sh
 
-
 SKIP_NAMES = ['.git']
 
 def find_filetargets(path, max_depth=None, include_files=True, include_dirs=True,

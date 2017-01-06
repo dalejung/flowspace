@@ -1,4 +1,5 @@
 from flowspace.xtools import get_active_window_title, send_keys
+import neovim
 
 DIR_MAP = {
     'up': 'k',
@@ -14,9 +15,8 @@ def is_vim(title):
     if bits[0].startswith('{') and bits[1] == 'vim':
         return True
 
-def vim_window_at_edge(direction, title=None):
-    if title is None:
-        title = get_active_window_title()
+def vim_window_at_edge(direction, context):
+    title = context['title']
 
     if not is_vim(title):
         return
@@ -38,7 +38,3 @@ def vim_window_at_edge(direction, title=None):
 
     up, right, down, left = geoms
     return locals()[direction]
-
-def focus(direction):
-    key = DIR_MAP[direction]
-    send_keys(r"Escape+comma+z+t+{key}".format(key=key))

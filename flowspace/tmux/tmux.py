@@ -25,13 +25,14 @@ DIR_MAP = {
 }
 
 class TmuxPane:
-    def __init__(self, id, active, top, right, bottom, left):
+    def __init__(self, id, active, top, right, bottom, left, pane_pid):
         self.id = id
         self.active = active
         self.top = top
         self.right = right
         self.bottom = bottom
         self.left = left
+        self.pane_pid = pane_pid
 
     def __repr__(self):
         s = 'TmuxPane({id}, {active}, {top}, {right}, {bottom}, {left})'
@@ -61,17 +62,21 @@ def tmux_parse_window_title(window_title):
     if matches:
         out = matches.group(1)
         session_name, window_index, pane_id = out.split(':')
-        return session_name, window_index, pane_id
+        context = {}
+        context['tmux_session'] = session_name
+        context['tmux_window'] = window_index
+        context['tmux_pane_id'] = pane_id
+        return context
 
 def parse_pane(line):
-    id, geom, active = line.split(':')
+    id, pane_pid, geom, active = line.split(':')
     top, right, bottom, left = map(int, geom.split(','))
     active = active == '1'
-    pane = TmuxPane(id, active, top, right, bottom, left)
+    pane = TmuxPane(id, active, top, right, bottom, left, pane_pid)
     return pane
 
 def get_panes(session_name=':'):
-    F = "#{pane_id}:#{pane_top},#{pane_right},#{pane_bottom},#{pane_left}:#{pane_active}"
+    F = "#{pane_id}:#{pane_pid}:#{pane_top},#{pane_right},#{pane_bottom},#{pane_left}:#{pane_active}"
     out = run("tmux list-panes -t {session_name} -F \"{F}\"", F=F, session_name=session_name)
     lines = out.split()
 
@@ -84,6 +89,16 @@ def get_active_pane_id(panes):
     except StopIteration:
         raise Exception("No pane give and not active pane.")
     return pane.id
+
+def tmux_context(title):
+    res = tmux_parse_window_title(title)
+    if not res:
+        return
+    panes = get_panes(res['tmux_session'])
+    pane = panes[res['tmux_pane_id']]
+    res.update(pane.__dict__)
+    return res
+
 
 def at_edge(direction, pane_id=None, session_name=':'):
     """

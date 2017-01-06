@@ -1,6 +1,6 @@
 import i3
 
-def focus_window(direction):
+def focus_window(direction, context=None):
     i3.focus(direction)
 
 def get_active_output():

@@ -10,7 +10,7 @@ DIR_MAP = {
 
 def is_vim(title):
     bits = title.split()
-    if bits[0] == 'vim':
+    if bits[0] == 'vim <':
         return True
     if bits[0].startswith('{') and bits[1] == 'vim':
         return True

@@ -39,7 +39,8 @@ def move_focus(direction):
     callback(direction, context)
 
 def _move_focus(direction, context):
-    if vim.is_vim(context['title']) and not vim.vim_window_at_edge(direction, context):
+    if vim.is_vim(context['title']) and not vim.vim_window_at_edge(direction,
+                                                                   context['title']):
         return 'vim'
 
     if 'tmux_session' not in context:

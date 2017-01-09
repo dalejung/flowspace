@@ -43,3 +43,20 @@ def workspace_switcher(outputs, offset, ws_num):
     switch_workspace(config, active_output, ws_num)
 
 cli.add_command(workspace_switcher)
+
+
+import flowspace.vim as vim
+@click.group(name='vim')
+def vim_group():
+    pass
+
+@click.command(name='send-command')
+@click.argument('pane_pid')
+@click.argument('command', nargs=-1)
+def send_command(pane_pid, command):
+    command = ' '.join(command)
+    vim.vim_command(pane_pid, command)
+
+vim_group.add_command(send_command)
+
+cli.add_command(vim_group)

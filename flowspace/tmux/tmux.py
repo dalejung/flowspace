@@ -25,18 +25,23 @@ DIR_MAP = {
 }
 
 class TmuxPane:
-    def __init__(self, id, active, top, right, bottom, left, pane_pid):
-        self.id = id
+    def __init__(self, id, active, top, right, bottom, left, pane_pid, title):
+        self.pane_id = id
         self.active = active
         self.top = top
         self.right = right
         self.bottom = bottom
         self.left = left
         self.pane_pid = pane_pid
+        self.title = title
 
     def __repr__(self):
-        s = 'TmuxPane({id}, {active}, {top}, {right}, {bottom}, {left})'
-        return s.format(**self.__dict__)
+        N = 20
+        title_str = self.title[:20]
+        if len(self.title) > N:
+            title_str += '...'
+        s = 'TmuxPane({pane_id}, {active}, {title_str}, {top}, {right}, {bottom}, {left})'
+        return s.format(**self.__dict__, title_str=title_str)
 
 def tmux_parse_window_title(window_title):
     """
@@ -69,18 +74,18 @@ def tmux_parse_window_title(window_title):
         return context
 
 def parse_pane(line):
-    id, pane_pid, geom, active = line.split(':')
+    id, pane_pid, geom, active, title = line.split(':', 5)
     top, right, bottom, left = map(int, geom.split(','))
     active = active == '1'
-    pane = TmuxPane(id, active, top, right, bottom, left, pane_pid)
+    pane = TmuxPane(id, active, top, right, bottom, left, pane_pid, title)
     return pane
 
 def get_panes(session_name=':'):
-    F = "#{pane_id}:#{pane_pid}:#{pane_top},#{pane_right},#{pane_bottom},#{pane_left}:#{pane_active}"
+    F = "#{pane_id}:#{pane_pid}:#{pane_top},#{pane_right},#{pane_bottom},#{pane_left}:#{pane_active}:#T"
     out = run("tmux list-panes -t {session_name} -F \"{F}\"", F=F, session_name=session_name)
-    lines = out.split()
+    lines = filter(None, out.split('\n'))
 
-    panes = {pane.id: pane for pane in map(parse_pane, lines)}
+    panes = {pane.pane_id: pane for pane in map(parse_pane, lines)}
     return panes
 
 def get_active_pane_id(panes):
@@ -88,7 +93,7 @@ def get_active_pane_id(panes):
         pane = next(filter(lambda x: x.active, panes.values()))
     except StopIteration:
         raise Exception("No pane give and not active pane.")
-    return pane.id
+    return pane.pane_id
 
 def tmux_context(title):
     res = tmux_parse_window_title(title)

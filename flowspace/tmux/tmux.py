@@ -74,7 +74,7 @@ def tmux_parse_window_title(window_title):
         return context
 
 def parse_pane(line):
-    id, pane_pid, geom, active, title = line.split(':', 5)
+    id, pane_pid, geom, active, title = line.split(':', 4)
     top, right, bottom, left = map(int, geom.split(','))
     active = active == '1'
     pane = TmuxPane(id, active, top, right, bottom, left, pane_pid, title)

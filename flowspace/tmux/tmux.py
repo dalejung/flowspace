@@ -99,7 +99,13 @@ def tmux_context(title):
     res = tmux_parse_window_title(title)
     if not res:
         return
-    panes = get_panes(res['tmux_session'])
+
+    # sometimes i am sshed and the window_title is the remote tmux
+    try:
+        panes = get_panes(res['tmux_session'])
+    except:
+        return
+
     pane = panes[res['tmux_pane_id']]
     res.update(pane.__dict__)
     return res

@@ -11,6 +11,8 @@ def is_vim(title):
     bits = title.split()
     if bits[0].startswith('{'):
         bits.pop()
+    if len(bits) < 2:
+        return False
     if bits[0] == 'vim' and bits[1].startswith('<'):
         return True
 

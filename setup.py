@@ -15,6 +15,7 @@ setup(
             ]
     },
     install_requires = [
-        'click'
+        'click',
+        'i3-py',
     ]
 )

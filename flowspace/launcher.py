@@ -2,6 +2,7 @@ import os
 import glob
 import itertools
 import re
+from pathlib import Path
 
 from xdg import BaseDirectory, DesktopEntry
 import pandas as pd
@@ -28,14 +29,23 @@ def get_desktop_frame():
         'content.Desktop Entry.|Exec|',
         'content.Desktop Entry.|Type|',
         'content.Desktop Entry.|Path|',
+        'filename',
         'content.Desktop Entry.|Location|',
         'content.Desktop Entry.|NoDisplay|',
         'content.Desktop Entry.|Hidden|',
         'content.Desktop Entry.|Terminal|',
     ])
 
-    # bleh. for now who cares about dupes
-    frame = frame.drop_duplicates('Name')
+    frame['filename'] = frame['filename'].map(lambda x: Path(x).name.rsplit('.', 1)[0])
+
+    groups = frame.groupby(['Name']).groups
+
+    dupe_names = [k for k in groups if len(groups[k]) > 1]
+
+    for loc, row in frame.iterrows():
+        if row.Name not in dupe_names:
+            continue
+        frame.loc[loc, 'Name'] = f'{row.Name} ({row.filename})'
 
     bool_cols = ['NoDisplay', 'Hidden', 'Terminal']
     for col in bool_cols:

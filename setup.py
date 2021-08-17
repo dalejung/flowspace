@@ -17,5 +17,6 @@ setup(
     install_requires = [
         'click',
         'i3-py',
+        'pyxdg',
     ]
 )

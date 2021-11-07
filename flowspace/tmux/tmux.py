@@ -64,14 +64,22 @@ def tmux_parse_window_title(window_title):
     Might be worth unsetting $TMUX.
     """
     matches = re.search(r'\{(.*?)\}', window_title)
-    if matches:
-        out = matches.group(1)
-        session_name, window_index, pane_id = out.split(':')
-        context = {}
-        context['tmux_session'] = session_name
-        context['tmux_window'] = window_index
-        context['tmux_pane_id'] = pane_id
-        return context
+
+    if not matches:
+        return
+
+    # handle errors when {} is found in window_title but not tmux.
+    out = matches.group(1)
+    parts = out.split(':')
+    if len(parts) != 3:
+        return
+
+    session_name, window_index, pane_id = parts
+    context = {}
+    context['tmux_session'] = session_name
+    context['tmux_window'] = window_index
+    context['tmux_pane_id'] = pane_id
+    return context
 
 def parse_pane(line):
     id, pane_pid, geom, active, title = line.split(':', 4)

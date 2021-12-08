@@ -8,3 +8,5 @@ def get_logger():
         logger.addHandler(journal.JournalHandler())
     except:
         pass
+
+    return logger

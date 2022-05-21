@@ -1,5 +1,8 @@
 import i3
 
+from flowspace import get_logger
+logger = get_logger()
+
 def focus_window(direction, context=None):
     i3.focus(direction)
 
@@ -10,10 +13,11 @@ def get_active_output():
             return ws['output']
 
 def switch_workspace(config, active_output, ws_num):
-    offset = config['offset']
+    ws_per_monitor = config['ws_per_monitor']
     output_config = config['output_config']
     base_num = output_config.get(active_output, 1)
     ws_num = (ws_num - 1) + base_num
+    logger.warning(f"active_output: {active_output} {ws_num} {base_num}")
     i3.workspace(str(ws_num))
 
 class I3Tree:

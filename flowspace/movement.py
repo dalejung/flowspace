@@ -1,3 +1,6 @@
+from flowspace import get_logger
+logger = get_logger()
+
 from .tmux import at_edge, select_pane, tmux_parse_window_title, tmux_context
 from .xtools import get_active_window_title, send_keys
 from . import i3wm
@@ -36,6 +39,7 @@ def move_focus(direction):
 
     mode = _move_focus(direction, context)
     callback = MODE_SWITCH[mode]
+    logger.warning(f"move_focus: mode:{mode} direction:{direction}")
     callback(direction, context)
 
 def _move_focus(direction, context):

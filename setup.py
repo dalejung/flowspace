@@ -1,8 +1,8 @@
 from distutils.core import setup
 import fastentrypoints
 
-DISTNAME='flowspace'
-FULLVERSION='0.1'
+DISTNAME = 'flowspace'
+FULLVERSION = '0.1'
 
 setup(
     name=DISTNAME,
@@ -14,9 +14,10 @@ setup(
                 'flowspace=flowspace.cli:cli',
             ]
     },
-    install_requires = [
+    install_requires=[
         'click',
         'i3-py',
         'pyxdg',
+        'systemd-python',
     ]
 )

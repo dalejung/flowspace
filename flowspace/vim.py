@@ -1,4 +1,7 @@
+from flowspace import get_logger
+logger = get_logger()
 from flowspace.xtools import get_active_window_title, send_keys
+
 
 DIR_MAP = {
     'up': 'k',
@@ -9,6 +12,8 @@ DIR_MAP = {
 
 def is_vim(title):
     bits = title.split()
+    if not bits:
+        return False
     if bits[0].startswith('{'):
         bits.pop()
     if len(bits) < 2:

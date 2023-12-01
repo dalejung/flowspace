@@ -1,5 +1,7 @@
-from flowspace.shell import run
 import re
+from flowspace.shell import run
+from flowspace import get_logger
+logger = get_logger()
 
 DIR_MAP = {
     'up': {

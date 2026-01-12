@@ -1,5 +1,4 @@
 from distutils.core import setup
-import fastentrypoints
 
 DISTNAME = 'flowspace'
 FULLVERSION = '0.1'
